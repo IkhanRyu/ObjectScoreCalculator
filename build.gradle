@@ -1,0 +1,27 @@
+group 'net.realtoner'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'java'
+apply plugin: 'maven'
+
+sourceCompatibility = 1.7
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+}
+
+Properties props = new Properties();
+props.load(new FileInputStream("config.properties"));
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: 'file:/${mavenRepositoryPath}')
+        }
+    }
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+}
