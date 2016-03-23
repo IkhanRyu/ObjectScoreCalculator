@@ -1,13 +1,14 @@
-import net.realtoner.objectcalculator.CalculationContext;
 import net.realtoner.objectcalculator.ObjectScoreCalculator;
 import net.realtoner.objectcalculator.ObjectScoreCalculatorBuilder;
-import net.realtoner.objectcalculator.ScorePropertyHandler;
 import net.realtoner.objectcalculator.annotation.ScoreProperty;
+import net.realtoner.objectcalculator.date.DefaultDatePropertyHandler;
+import net.realtoner.objectcalculator.date.annotation.DateProperty;
 import net.realtoner.objectcalculator.exception.InvalidScoreObjectException;
-import net.realtoner.objectcalculator.exception.ScoreCalculationException;
 import org.junit.Test;
 
-import java.util.Random;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 import static org.junit.Assert.*;
 
@@ -63,6 +64,9 @@ public class ObjectScoreCalculatorTest {
         }
     }
 
+    /**
+     *
+     * */
     @Test(expected = InvalidScoreObjectException.class)
     public void testBuildInvalidObjectScoreCalculator() throws Exception {
 
@@ -73,6 +77,9 @@ public class ObjectScoreCalculatorTest {
                         .build();
     }
 
+    /**
+     *
+     * */
     @Test
     public void testBuildValidObjectScoreCalculator() throws Exception {
 
@@ -85,6 +92,9 @@ public class ObjectScoreCalculatorTest {
 
     private static final int CALCULATION_TEST_COUNT = 20;
 
+    /**
+     *
+     * */
     @Test
     public void testCalculation() throws Exception{
 
@@ -92,13 +102,6 @@ public class ObjectScoreCalculatorTest {
 
         ObjectScoreCalculator objectScoreCalculator =
                 objectScoreCalculatorFactory.addObjectScoreObjectClass(ValidScoreObject.class)
-                        .addStringScorePropertyHandler(new ScorePropertyHandler() {
-                            @Override
-                            public long getScore(Object value, CalculationContext calculationContext)
-                                    throws ScoreCalculationException {
-                                return ((String)value).length();
-                            }
-                        })
                         .build();
 
         Random random = new Random();
@@ -121,9 +124,68 @@ public class ObjectScoreCalculatorTest {
 
             long expectedScore = id * INTEGER_TEST_CONSTANT_MULTIPLY + (long)(score * DOUBLE_TEST_CONSTANT_MULTIPLY) +
                     name.length();
-            long result = objectScoreCalculator.score(ValidScoreObject.class, validScoreObject);
+            long result = objectScoreCalculator.calculateScore(ValidScoreObject.class, validScoreObject);
 
             assertEquals(result, expectedScore);
         }
+    }
+
+    public static class DateScoreObject{
+
+        @ScoreProperty("DateProperty")
+        @DateProperty
+        private List<Date> dateList = null;
+
+        public List<Date> getDateList() {
+            return dateList;
+        }
+
+        public void setDateList(List<Date> dateList) {
+            this.dateList = dateList;
+        }
+    }
+
+    @Test
+    public void testDateCalculation() throws Exception{
+
+        ObjectScoreCalculatorBuilder objectScoreCalculatorFactory = new ObjectScoreCalculatorBuilder();
+
+        ObjectScoreCalculator objectScoreCalculator =
+                objectScoreCalculatorFactory.addObjectScoreObjectClass(DateScoreObject.class)
+                        .addScorePropertyHandler("DateProperty", new DefaultDatePropertyHandler() {
+
+                            @Override
+                            protected Date getFromDate(Object object) {
+                                SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+
+                                try {
+                                    return sdf.parse("20160310");
+                                } catch (ParseException ignored) {
+                                    return null;
+                                }
+                            }
+                        })
+                        .setUseDateProperty(true)
+                        .build();
+
+        List<Date> dateList = new ArrayList<>();
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+
+        dateList.add(sdf.parse("20160322"));
+        dateList.add(sdf.parse("20160321"));
+        dateList.add(sdf.parse("20160320"));
+        dateList.add(sdf.parse("20160319"));
+        dateList.add(sdf.parse("20160318"));
+        dateList.add(sdf.parse("20160317"));
+        dateList.add(sdf.parse("20160316"));
+
+        DateScoreObject dateScoreObject = new DateScoreObject();
+
+        dateScoreObject.setDateList(dateList);
+
+        long score = objectScoreCalculator.calculateScore(DateScoreObject.class, dateScoreObject);
+
+        assertEquals(score, 63);
     }
 }

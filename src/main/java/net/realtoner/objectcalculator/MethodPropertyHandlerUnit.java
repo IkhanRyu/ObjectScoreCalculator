@@ -2,6 +2,7 @@ package net.realtoner.objectcalculator;
 
 import net.realtoner.objectcalculator.exception.ScoreCalculationException;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 /**
@@ -14,26 +15,24 @@ public final class MethodPropertyHandlerUnit {
     private ScorePropertyHandler scorePropertyHandler = null;
     private CalculationContext calculationContext = null;
 
-    MethodPropertyHandlerUnit(Method method, ScorePropertyHandler propertyHandler, CalculationContext calculationContext){
+    MethodPropertyHandlerUnit(Method method, ScorePropertyHandler propertyHandler, CalculationContext calculationContext) {
         this.method = method;
         this.scorePropertyHandler = propertyHandler;
         this.calculationContext = calculationContext;
     }
 
     /**
-     *
      * @param object
      * @return
      * @throws ScoreCalculationException
-     * */
+     */
     public long getScore(Object object) throws ScoreCalculationException {
 
         try {
             Object returnValue = method.invoke(object);
 
-            return scorePropertyHandler.getScore(returnValue,calculationContext);
-
-        } catch (Exception e) {
+            return scorePropertyHandler.getScore(object, returnValue, calculationContext);
+        } catch (IllegalAccessException | InvocationTargetException e) {
             throw new ScoreCalculationException(e);
         }
     }

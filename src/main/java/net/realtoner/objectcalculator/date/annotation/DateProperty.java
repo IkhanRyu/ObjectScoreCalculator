@@ -11,9 +11,10 @@ import java.lang.annotation.Target;
  * @author RyuIkHan
  * @since 2016. 3. 21.
  */
-@Target(ElementType.METHOD)
+@Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface DateProperty {
 
     DateIntervalType dateIntervalType() default DateIntervalType.DATE;
+    boolean useAbsolute() default false;
 }

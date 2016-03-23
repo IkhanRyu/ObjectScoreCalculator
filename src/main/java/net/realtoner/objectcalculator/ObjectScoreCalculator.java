@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * ObjectScoreCalculator calculates the score of given object.
+ *
  * @author RyuIkHan
  * @since 2016. 3. 21.
  */
@@ -21,13 +23,19 @@ public class ObjectScoreCalculator {
         scoreObjectHandlerMap.put(clazz, rankObjectHandler);
     }
 
-    public <T> long score(Class<T> clazz, T object) throws ClassNotFoundException, ScoreCalculationException {
+    /**
+     *
+     * @param clazz
+     * @param object
+     * @return
+     * */
+    public <T> long calculateScore(Class<T> clazz, T object) throws ClassNotFoundException, ScoreCalculationException {
 
         ScoreObjectHandler rankObjectHandler = scoreObjectHandlerMap.get(clazz);
 
         if (rankObjectHandler == null) {
             throw new ClassNotFoundException(
-                    "Given class \'" + clazz.getName() + "\' is not added to this RankBuilder.");
+                    "Given class \'" + clazz.getName() + "\' is not added to this ObjectScoreCalculator.");
         }
 
         return rankObjectHandler.getScore(object);

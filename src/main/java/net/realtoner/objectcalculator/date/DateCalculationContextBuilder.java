@@ -13,6 +13,7 @@ import java.lang.annotation.Annotation;
 public class DateCalculationContextBuilder implements CalculationContextBuilder{
 
     public static final String CONTEXT_PARAM_DATE_INTERVAL = "date_param_date_interval_type";
+    public static final String CONTEXT_PARAM_DATE_USE_ABSOLUTE = "date_param_date_use_absolute";
 
     @Override
     public void build(Annotation annotation, CalculationContext calculationContext) {
@@ -20,5 +21,6 @@ public class DateCalculationContextBuilder implements CalculationContextBuilder{
         DateProperty dateProperty = (DateProperty)annotation;
 
         calculationContext.putParam(CONTEXT_PARAM_DATE_INTERVAL, dateProperty.dateIntervalType());
+        calculationContext.putParam(CONTEXT_PARAM_DATE_USE_ABSOLUTE, dateProperty.useAbsolute());
     }
 }

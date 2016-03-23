@@ -10,7 +10,8 @@ import net.realtoner.objectcalculator.exception.ScoreCalculationException;
  */
 public class IntegerPropertyHandler implements ScorePropertyHandler{
     @Override
-    public long getScore(Object value, CalculationContext calculationContext) throws ScoreCalculationException{
+    public long getScore(Object object, Object value, CalculationContext calculationContext)
+            throws ScoreCalculationException{
 
         if(value instanceof Integer){
             return (long)((int)value * calculationContext.getConstantMultiply());

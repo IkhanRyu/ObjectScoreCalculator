@@ -14,5 +14,5 @@ public interface ScorePropertyHandler {
      * @param calculationContext
      * @return
      * */
-    long getScore(Object value, CalculationContext calculationContext) throws ScoreCalculationException;
+    long getScore(Object object, Object value, CalculationContext calculationContext) throws ScoreCalculationException;
 }

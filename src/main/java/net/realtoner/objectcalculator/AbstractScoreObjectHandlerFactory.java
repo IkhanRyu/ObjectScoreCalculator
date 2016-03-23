@@ -19,6 +19,7 @@ public abstract class AbstractScoreObjectHandlerFactory implements ScoreObjectHa
     @Override
     public void addScorePropertyAnnotation(Class<? extends Annotation> annotationClass,
                                            CalculationContextBuilder builder) {
+
         annotationMap.put(annotationClass, builder);
     }
 

@@ -16,7 +16,7 @@ import java.util.Map;
 public class DefaultScoreObjectHandlerFactory extends AbstractScoreObjectHandlerFactory {
 
     /**
-     *
+     * handler name > annotation > type
      * */
     private List<MethodPropertyHandlerUnit> createMethodPropertyHandlerUnitList(Class<?> clazz,
                                                                                 Map<String, ScorePropertyHandler> namePropertyHandlerMap,

@@ -6,6 +6,7 @@ import net.realtoner.objectcalculator.date.annotation.DateProperty;
 import net.realtoner.objectcalculator.exception.InvalidScoreObjectException;
 import net.realtoner.objectcalculator.handler.FloatingPointPropertyHandler;
 import net.realtoner.objectcalculator.handler.IntegerPropertyHandler;
+import net.realtoner.objectcalculator.handler.StringPropertyHandler;
 
 import java.lang.annotation.Annotation;
 import java.util.HashMap;
@@ -106,10 +107,9 @@ public class ObjectScoreCalculatorBuilder {
      *
      * @param flag
      * */
-    public ObjectScoreCalculatorBuilder setUseDateCalculationContextBuilder(boolean flag){
+    public ObjectScoreCalculatorBuilder setUseDateProperty(boolean flag){
 
         if(!annotationCalculationContextBuilderMap.containsKey(DateProperty.class) && flag){
-
             annotationCalculationContextBuilderMap.put(DateProperty.class, new DateCalculationContextBuilder());
         }else if(annotationCalculationContextBuilderMap.containsKey(DateProperty.class) && !flag){
 
@@ -149,7 +149,7 @@ public class ObjectScoreCalculatorBuilder {
         }
 
         if(!stringScorePropertyHandlerFlag){
-            addStringScorePropertyHandler(null);
+            addStringScorePropertyHandler(new StringPropertyHandler());
         }
     }
 

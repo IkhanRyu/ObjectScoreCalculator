@@ -1,5 +1,6 @@
 package net.realtoner.objectcalculator.date;
 
+import net.realtoner.objectcalculator.CalculationContext;
 import net.realtoner.objectcalculator.ScorePropertyHandler;
 
 import java.util.Date;
@@ -37,6 +38,7 @@ public abstract class AbstractDatePropertyHandler implements ScorePropertyHandle
     }
 
     /**
+     * calculate the difference between two date. (to) - (from)
      *
      * @param from
      * @param to
@@ -54,6 +56,8 @@ public abstract class AbstractDatePropertyHandler implements ScorePropertyHandle
     }
 
     /**
+     *
+     * (to) - (from) the bigger value, the date is more recent
      *
      * @param from
      * @param to
@@ -75,5 +79,14 @@ public abstract class AbstractDatePropertyHandler implements ScorePropertyHandle
         }
 
         return interval;
+    }
+
+    protected boolean isUseAbsolute(CalculationContext calculationContext){
+
+        return (boolean)calculationContext.getParam(DateCalculationContextBuilder.CONTEXT_PARAM_DATE_USE_ABSOLUTE);
+    }
+
+    protected DateIntervalType getDateIntervalType(CalculationContext calculationContext){
+        return (DateIntervalType)calculationContext.getParam(DateCalculationContextBuilder.CONTEXT_PARAM_DATE_INTERVAL);
     }
 }

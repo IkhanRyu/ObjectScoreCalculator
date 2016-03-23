@@ -11,7 +11,8 @@ import net.realtoner.objectcalculator.exception.ScoreCalculationException;
 public class FloatingPointPropertyHandler implements ScorePropertyHandler{
 
     @Override
-    public long getScore(Object value, CalculationContext calculationContext) throws ScoreCalculationException{
+    public long getScore(Object object, Object value, CalculationContext calculationContext)
+            throws ScoreCalculationException{
 
         if(value instanceof Double){
             return (long)((double)value * calculationContext.getConstantMultiply());
